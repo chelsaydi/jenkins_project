@@ -1,0 +1,62 @@
+pipeline {
+    agent any
+
+    environment {
+        VIRTUAL_ENV = 'venv'
+    }
+
+    stages {
+        stage('Setup') {
+            steps {
+                sh '''
+                    python3 -m venv ${VIRTUAL_ENV}
+                    . ${VIRTUAL_ENV}/bin/activate
+                    python -m pip install --upgrade pip
+                    pip install -r requirements.txt
+                '''
+            }
+        }
+
+        stage('Lint') {
+            steps {
+                sh '. ${VIRTUAL_ENV}/bin/activate && flake8 app.py tests'
+            }
+        }
+
+        stage('Test') {
+            steps {
+                sh '. ${VIRTUAL_ENV}/bin/activate && pytest --junitxml=test-results.xml'
+            }
+        }
+
+        stage('Coverage') {
+            steps {
+                sh '''
+                    . ${VIRTUAL_ENV}/bin/activate
+                    coverage erase
+                    coverage run -m pytest
+                    coverage report
+                    coverage xml -o coverage.xml
+                '''
+            }
+        }
+
+        stage('Security Scan') {
+            steps {
+                sh '. ${VIRTUAL_ENV}/bin/activate && bandit -r app.py'
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                sh '. ${VIRTUAL_ENV}/bin/activate && sh deploy.sh'
+            }
+        }
+    }
+
+    post {
+        always {
+            cleanWs()
+        }
+    }
+}
