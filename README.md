@@ -22,7 +22,7 @@ sh deploy.sh
 ## Jenkins setup
 
 1. Create a Pipeline job named `Python-CI-CD`.
-2. Configure Git with `https://github.com/chelseasaydi/jenkins_project`.
+2. Configure Git with `https://github.com/chelsaydi/jenkins_project`.
 3. Use `main` as the branch to build.
 4. Set the Jenkinsfile path to `Jenkinsfile_Chelsea_Saydi`.
 5. Run the pipeline manually or add a webhook for automatic builds.

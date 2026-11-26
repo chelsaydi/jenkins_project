@@ -12,7 +12,7 @@
 
 ## Jenkins Configuration
 
-- Repository: https://github.com/chelseasaydi/jenkins_project
+- Repository: https://github.com/chelsaydi/jenkins_project
 - Job: `Python-CI-CD`
 - Jenkinsfile: `Jenkinsfile_Chelsea_Saydi`
 - Branch: `main`
